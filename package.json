@@ -1,0 +1,19 @@
+{
+  "name": "onetwotrip-test-1",
+  "version": "1.0.0",
+  "description": "onetwotrip redis test",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t1maccapp/onetwotrip-test-1.git"
+  },
+  "author": "t1maccapp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/t1maccapp/onetwotrip-test-1/issues"
+  },
+  "homepage": "https://github.com/t1maccapp/onetwotrip-test-1#readme"
+}
