@@ -26,8 +26,30 @@ async function runWorker () {
   if (errorsReadMode) {
     await worker.printErrors()
   } else {
-    await worker.consume
+    await loop1()
+    await loop2()
+  }
+}
 
+async function loop1 () {
+  await worker.updateStatus()
+  await worker.tryToBecomeProducer()
+  console.log(1)
+  setTimeout(loop1, 2500)
+}
+
+async function loop2 () {
+  switch (worker.TYPE) {
+    case Worker.TYPE_PRODUCER:
+      console.log('P')
+      await worker.produce()
+      setTimeout(loop2, 500)
+      break
+    case Worker.TYPE_CONSUMER:
+      console.log('C')
+      await worker.consume()
+      setTimeout(loop2, 100)
+      break
   }
 }
 
