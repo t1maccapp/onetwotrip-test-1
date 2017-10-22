@@ -3,7 +3,7 @@
 const redis = require('redis')
 
 const config = require('./lib/config')
-const Discovery = require('./lib/sharedMemory/dicovery')
+const Discovery = require('./lib/sharedMemory/discovery')
 const Queues = require('./lib/sharedMemory/queues')
 const Worker = require('./lib/worker')
 
@@ -15,7 +15,7 @@ let discovery
 let queues
 let worker
 
-async function initWorker () {
+async function init () {
   redisClient = redis.createClient({
     host: config.REDIS_HOST,
     port: config.REDIS_PORT
@@ -26,11 +26,15 @@ async function initWorker () {
   worker = new Worker(discovery, queues)
 }
 
-async function runWorker () {
+async function run () {
   if (errorsReadMode) {
     await worker.printErrors()
+
+    redisClient.quit()
   } else if (requeueMode) {
     await worker.requeueProcessingMessages()
+
+    redisClient.quit()
   } else {
     await worker.register()
     await loop1()
@@ -51,23 +55,23 @@ async function loop1 () {
 async function loop2 () {
   switch (worker.type) {
     case Worker.TYPE_PRODUCER:
-      console.log('P')
-
       if (await worker.tryToUpdateProducerTTL()) {
-        console.log('UPDATED')
         await worker.produce()
       }
 
       setTimeout(loop2, 500)
       break
     case Worker.TYPE_CONSUMER:
-      console.log('C')
       await worker.consume()
       setTimeout(loop2, 100)
       break
   }
 }
 
+process.on('unhandledRejection', err => {
+  throw err
+})
+
 Promise.resolve()
-  .then(initWorker)
-  .then(runWorker)
+  .then(init)
+  .then(run)
