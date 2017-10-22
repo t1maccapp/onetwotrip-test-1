@@ -10,7 +10,7 @@ const Worker = require('./lib/worker')
 const errorsReadMode = (process.argv[2] === '--getErrors')
 const requeueMode = (process.argv[2] === '--requeue')
 
-const DISCOVERY_TIMEOUT = 2500
+const DISCOVERY_TIMEOUT = 1000
 const PRODUCER_WORKING_TIMEOUT = 500
 const CONSUMER_WORKING_TIMEOUT = 100
 
@@ -19,7 +19,7 @@ let discovery
 let queues
 let worker
 
-async function init () {
+function init () {
   redisClient = redis.createClient({
     host: config.REDIS_HOST,
     port: config.REDIS_PORT
@@ -67,15 +67,17 @@ async function loopWorking () {
       break
     case Worker.TYPE_CONSUMER:
       await worker.consume()
+
       setTimeout(loopWorking, CONSUMER_WORKING_TIMEOUT)
       break
   }
 }
 
+// wtf https://github.com/nodejs/node/issues/9523
 process.on('unhandledRejection', err => {
   throw err
 })
 
-Promise.resolve()
-  .then(init)
-  .then(run)
+init()
+
+Promise.resolve().then(run)
