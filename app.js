@@ -3,13 +3,16 @@
 const redis = require('redis')
 
 const config = require('./lib/config')
-const SharedMemory = require('./lib/sharedMemory')
+const Discovery = require('./lib/sharedMemory/dicovery')
+const Queues = require('./lib/sharedMemory/queues')
 const Worker = require('./lib/worker')
 
 const errorsReadMode = (process.argv[2] === '--getErrors')
+const requeueMode = (process.argv[2] === '--requeue')
 
 let redisClient
-let sharedMemory
+let discovery
+let queues
 let worker
 
 async function initWorker () {
@@ -18,14 +21,18 @@ async function initWorker () {
     port: config.REDIS_PORT
   })
 
-  sharedMemory = new SharedMemory(redisClient)
-  worker = new Worker(sharedMemory)
+  discovery = new Discovery(redisClient)
+  queues = new Queues(redisClient)
+  worker = new Worker(discovery, queues)
 }
 
 async function runWorker () {
   if (errorsReadMode) {
     await worker.printErrors()
+  } else if (requeueMode) {
+    await worker.requeueProcessingMessages()
   } else {
+    await worker.register()
     await loop1()
     await loop2()
   }
@@ -33,16 +40,24 @@ async function runWorker () {
 
 async function loop1 () {
   await worker.updateStatus()
-  await worker.tryToBecomeProducer()
-  console.log(1)
+
+  if (worker.type === Worker.TYPE_CONSUMER) {
+    await worker.tryToBecomeProducer()
+  }
+
   setTimeout(loop1, 2500)
 }
 
 async function loop2 () {
-  switch (worker.TYPE) {
+  switch (worker.type) {
     case Worker.TYPE_PRODUCER:
       console.log('P')
-      await worker.produce()
+
+      if (await worker.tryToUpdateProducerTTL()) {
+        console.log('UPDATED')
+        await worker.produce()
+      }
+
       setTimeout(loop2, 500)
       break
     case Worker.TYPE_CONSUMER:
