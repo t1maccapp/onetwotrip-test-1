@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/t1maccapp/onetwotrip-test-1#readme",
   "dependencies": {
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "uniqid": "^4.1.1"
   }
 }
