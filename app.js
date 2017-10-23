@@ -41,34 +41,34 @@ async function run () {
     redisClient.quit()
   } else {
     await worker.register()
-    await loopDiscovery()
-    await loopWorking()
+    await loopServiceDiscovery()
+    await loopProcessingMessages()
   }
 }
 
-async function loopDiscovery () {
+async function loopServiceDiscovery () {
   await worker.updateStatus()
 
   if (worker.type === Worker.TYPE_CONSUMER) {
     await worker.tryToBecomeProducer()
   }
 
-  setTimeout(loopDiscovery, DISCOVERY_TIMEOUT)
+  setTimeout(loopServiceDiscovery, DISCOVERY_TIMEOUT)
 }
 
-async function loopWorking () {
+async function loopProcessingMessages () {
   switch (worker.type) {
     case Worker.TYPE_PRODUCER:
       if (await worker.tryToUpdateProducerTTL()) {
         await worker.produce()
       }
 
-      setTimeout(loopWorking, PRODUCER_WORKING_TIMEOUT)
+      setTimeout(loopProcessingMessages, PRODUCER_WORKING_TIMEOUT)
       break
     case Worker.TYPE_CONSUMER:
       await worker.consume()
 
-      setTimeout(loopWorking, CONSUMER_WORKING_TIMEOUT)
+      setTimeout(loopProcessingMessages, CONSUMER_WORKING_TIMEOUT)
       break
   }
 }
