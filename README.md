@@ -20,8 +20,10 @@ You can run multiple workers and single instance of redis using docker-compose:
 1. How worker interacts with redis to produce and consume messages:
 
 ![Message Broker](resources/messageBroker.png)
+
 2. How worker discovers who is producer and when it is possible to requeue processing messages in a case of failure:
 
 ![Service Discovery](resources/serviceDiscovery.png)
 
 ### Testing
+1. Run ```npm test``` to run both unit (with coverage) and functional tests.
