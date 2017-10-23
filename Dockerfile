@@ -1,4 +1,4 @@
-FROM node:8.1.3
+FROM node:8.7
 
 RUN mkdir -p /src/
 COPY package.json /src/
