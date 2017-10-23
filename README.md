@@ -16,6 +16,9 @@ You can run multiple workers and single instance of redis using docker-compose:
 3. Run worker ```npm run worker```. If you have redis host or port different to default (localhost: 6379), provide it via env vars: __REDIS_HOST__ amd __REDIS_PORT__
 4. Check errors ```npm run getErrors``` and requeue lost processing messages ```npm run requeue```
 
+### Testing
+1. Run ```npm test``` to run both unit (with coverage) and functional tests.
+
 ### Redis Schemes
 1. How worker interacts with redis to produce and consume messages:
 
@@ -24,6 +27,3 @@ You can run multiple workers and single instance of redis using docker-compose:
 2. How worker discovers who is producer and when it is possible to requeue processing messages in a case of failure:
 
 ![Service Discovery](resources/serviceDiscovery.png)
-
-### Testing
-1. Run ```npm test``` to run both unit (with coverage) and functional tests.
