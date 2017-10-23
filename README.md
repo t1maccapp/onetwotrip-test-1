@@ -22,8 +22,8 @@ You can run multiple workers and single instance of redis using docker-compose:
 ### Redis Schemes
 1. How worker interacts with redis to produce and consume messages:
 
-![Message Broker](resources/messageBroker.png)
+![Message Broker](spec/docs/messageBroker.png)
 
 2. How worker discovers who is producer and when it is possible to requeue processing messages in a case of failure:
 
-![Service Discovery](resources/serviceDiscovery.png)
+![Service Discovery](spec/docs/serviceDiscovery.png)
