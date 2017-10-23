@@ -19,5 +19,10 @@
   "dependencies": {
     "redis": "^2.8.0",
     "uniqid": "^4.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "sinon": "^4.0.1"
   }
 }
