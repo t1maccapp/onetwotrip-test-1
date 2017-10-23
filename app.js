@@ -3,7 +3,7 @@
 const redis = require('redis')
 
 const config = require('./lib/config')
-const Discovery = require('./lib/sharedMemory/discovery')
+const ServiceDiscovery = require('./lib/sharedMemory/serviceDiscovery')
 const Queues = require('./lib/sharedMemory/queues')
 const Worker = require('./lib/worker')
 
@@ -15,7 +15,7 @@ const PRODUCER_WORKING_TIMEOUT = 500
 const CONSUMER_WORKING_TIMEOUT = 100
 
 let redisClient
-let discovery
+let serviceDiscovery
 let queues
 let worker
 
@@ -25,9 +25,9 @@ function init () {
     port: config.REDIS_PORT
   })
 
-  discovery = new Discovery(redisClient)
+  serviceDiscovery = new ServiceDiscovery(redisClient)
   queues = new Queues(redisClient)
-  worker = new Worker(discovery, queues)
+  worker = new Worker(serviceDiscovery, queues)
 }
 
 async function run () {
@@ -74,9 +74,7 @@ async function loopWorking () {
 }
 
 // wtf https://github.com/nodejs/node/issues/9523
-process.on('unhandledRejection', err => {
-  throw err
-})
+process.on('unhandledRejection', err => { console.err(err) })
 
 init()
 
