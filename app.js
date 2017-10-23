@@ -4,7 +4,7 @@ const redis = require('redis')
 
 const config = require('./lib/config')
 const ServiceDiscovery = require('./lib/sharedMemory/serviceDiscovery')
-const Queues = require('./lib/sharedMemory/queues')
+const MessageBroker = require('./lib/sharedMemory/messageBroker')
 const Worker = require('./lib/worker')
 
 const errorsReadMode = (process.argv[2] === '--getErrors')
@@ -16,7 +16,7 @@ const CONSUMER_WORKING_TIMEOUT = 100
 
 let redisClient
 let serviceDiscovery
-let queues
+let messageBroker
 let worker
 
 function init () {
@@ -26,8 +26,8 @@ function init () {
   })
 
   serviceDiscovery = new ServiceDiscovery(redisClient)
-  queues = new Queues(redisClient)
-  worker = new Worker(serviceDiscovery, queues)
+  messageBroker = new MessageBroker(redisClient)
+  worker = new Worker(serviceDiscovery, messageBroker)
 }
 
 async function run () {
