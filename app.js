@@ -31,18 +31,22 @@ function init () {
 }
 
 async function run () {
-  if (errorsReadMode) {
-    await worker.printErrors()
+  try {
+    if (errorsReadMode) {
+      await worker.printErrors()
 
-    redisClient.quit()
-  } else if (requeueMode) {
-    await worker.requeueProcessingMessages()
+      redisClient.quit()
+    } else if (requeueMode) {
+      await worker.requeueProcessingMessages()
 
-    redisClient.quit()
-  } else {
-    await worker.register()
-    await loopServiceDiscovery()
-    await loopProcessingMessages()
+      redisClient.quit()
+    } else {
+      await worker.register()
+      await loopServiceDiscovery()
+      await loopProcessingMessages()
+    }
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -72,9 +76,6 @@ async function loopProcessingMessages () {
       break
   }
 }
-
-// wtf https://github.com/nodejs/node/issues/9523
-process.on('unhandledRejection', err => { console.err(err) })
 
 init()
 
