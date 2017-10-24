@@ -16,9 +16,9 @@ const redisClientMock = {
   expire: () => {}
 }
 
-describe('ServiceDiscovery', () => {
+describe('serviceDiscovery.js', () => {
   describe('registerWorker', () => {
-    it('should call _asyncSAdd and throw error', async () => {
+    it('should call this._asyncSAdd and throw error', async () => {
       const workerName = 'workerName'
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')
 
@@ -40,7 +40,7 @@ describe('ServiceDiscovery', () => {
       }
     })
 
-    it('should call _asyncSAdd', async () => {
+    it('should call this._asyncSAdd', async () => {
       const workerName = 'workerName'
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')
 
@@ -59,7 +59,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('getRegisteredWorkers', () => {
-    it('should call _asyncSMembers', async () => {
+    it('should call this._asyncSMembers', async () => {
       const workersSet = [1, 2, 3]
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')
 
@@ -77,7 +77,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('deRegisterWorker', () => {
-    it('should call _asyncSRem and throw error', async () => {
+    it('should call this._asyncSRem and throw error', async () => {
       const workerName = 'workerName'
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')
 
@@ -99,7 +99,7 @@ describe('ServiceDiscovery', () => {
       }
     })
 
-    it('should call _asyncSRem', async () => {
+    it('should call this._asyncSRem', async () => {
       const workerName = 'workerName'
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')
 
@@ -118,7 +118,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('updateAliveStatus', () => {
-    it('should call _asyncSet and throw error', async () => {
+    it('should call this._asyncSet and throw error', async () => {
       const workerName = 'workerName'
       const WORKERS_ALIVE_KEY_PREFIX = ServiceDiscovery.__get__('WORKERS_ALIVE_KEY_PREFIX')
       const ALIVE_STATUS = ServiceDiscovery.__get__('ALIVE_STATUS')
@@ -142,7 +142,7 @@ describe('ServiceDiscovery', () => {
       }
     })
 
-    it('should call _asyncSet', async () => {
+    it('should call this._asyncSet', async () => {
       const workerName = 'workerName'
       const WORKERS_ALIVE_KEY_PREFIX = ServiceDiscovery.__get__('WORKERS_ALIVE_KEY_PREFIX')
       const ALIVE_STATUS = ServiceDiscovery.__get__('ALIVE_STATUS')
@@ -163,7 +163,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('workerIsAlive', () => {
-    it('should call _asyncGet', async () => {
+    it('should call this._asyncGet', async () => {
       const workerName = 'workerName'
       const WORKERS_ALIVE_KEY_PREFIX = ServiceDiscovery.__get__('WORKERS_ALIVE_KEY_PREFIX')
       const ALIVE_STATUS = ServiceDiscovery.__get__('ALIVE_STATUS')
@@ -182,7 +182,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('setProducer', () => {
-    it('should call _asyncSet', async () => {
+    it('should call this._asyncSet', async () => {
       const workerName = 'workerName'
       const WORKERS_PRODUCER_KEY = ServiceDiscovery.__get__('WORKERS_PRODUCER_KEY')
       const WORKER_PRODUCER_TTL = ServiceDiscovery.__get__('WORKER_PRODUCER_TTL')
@@ -201,7 +201,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('getProducer', () => {
-    it('should call _asyncGet', async () => {
+    it('should call this._asyncGet', async () => {
       const workerName = 'workerName'
       const WORKERS_PRODUCER_KEY = ServiceDiscovery.__get__('WORKERS_PRODUCER_KEY')
 
@@ -219,7 +219,7 @@ describe('ServiceDiscovery', () => {
   })
 
   describe('updateProducerTTL', () => {
-    it('should call _asyncExpire and throw error', async () => {
+    it('should call this._asyncExpire and throw error', async () => {
       const WORKERS_PRODUCER_KEY = ServiceDiscovery.__get__('WORKERS_PRODUCER_KEY')
       const WORKER_PRODUCER_TTL = ServiceDiscovery.__get__('WORKER_PRODUCER_TTL')
 
@@ -241,7 +241,7 @@ describe('ServiceDiscovery', () => {
       }
     })
 
-    it('should call _asyncExpire and _asyncGet, then return workerName', async () => {
+    it('should call this._asyncExpire and this._asyncGet, then return workerName', async () => {
       const workerName = 'workerName'
       const WORKERS_PRODUCER_KEY = ServiceDiscovery.__get__('WORKERS_PRODUCER_KEY')
       const WORKERS_PROCESSING_SET_KEY = ServiceDiscovery.__get__('WORKERS_PROCESSING_SET_KEY')

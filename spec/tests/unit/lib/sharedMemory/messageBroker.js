@@ -16,7 +16,7 @@ const redisClientMock = {
   ltrim: () => {}
 }
 
-describe('MessageBroker', () => {
+describe('messageBroker.js', () => {
   describe('addNewMessage', () => {
     it('should call this._asyncRPush', async () => {
       const message = 'message'
@@ -138,7 +138,7 @@ describe('MessageBroker', () => {
   })
 
   describe('requeueProcessingMessage', () => {
-    it('should call ._asyncRPopLPush', async () => {
+    it('should call this._asyncRPopLPush', async () => {
       const workerName = 'worker'
       const WORKERS_PROCESSING_KEY_PREFIX = MessageBroker.__get__('WORKERS_PROCESSING_KEY_PREFIX')
       const MESSAGES_QUEUE_KEY = MessageBroker.__get__('MESSAGES_QUEUE_KEY')
