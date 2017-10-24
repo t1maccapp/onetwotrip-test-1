@@ -46,7 +46,7 @@ async function run () {
       await loopProcessingMessages()
     }
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
