@@ -121,7 +121,7 @@ describe('messageBroker.js', () => {
 
       const asyncLRange = sinon
         .stub()
-        .withArgs(MESSAGES_QUEUE_ERRORS_KEY, 0, ERRORS_CHUNK_SIZE - 1)
+        .withArgs(MESSAGES_QUEUE_ERRORS_KEY, -ERRORS_CHUNK_SIZE, -1)
         .returns(errors)
 
       const asyncLTrim = sinon.spy()
@@ -133,7 +133,7 @@ describe('messageBroker.js', () => {
       assert.equal(await messageBroker.getErrorsChunk(), errors)
       assert.isTrue(asyncLRange.calledOnce)
       assert.isTrue(asyncLTrim.calledOnce)
-      assert.isTrue(asyncLTrim.calledWith(MESSAGES_QUEUE_ERRORS_KEY, ERRORS_CHUNK_SIZE, -1))
+      assert.isTrue(asyncLTrim.calledWith(MESSAGES_QUEUE_ERRORS_KEY, 0, -(ERRORS_CHUNK_SIZE + 1)))
     })
   })
 
