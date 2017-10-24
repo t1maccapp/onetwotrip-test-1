@@ -4,7 +4,10 @@
   "description": "onetwotrip redis test",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/mocha/bin/_mocha --ui bdd --recursive ./spec/tests/unit && node_modules/mocha/bin/_mocha --ui bdd --recursive ./spec/tests/functional",
+    "coverage": "node_modules/istanbul/lib/cli.js cover --include-all-sources ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 --recursive ./spec/tests/unit",
+    "lint": "node_modules/standard/bin/cmd.js --ignore spec/*",
+    "security": "node_modules/retire/bin/retire; node_modules/nsp/bin/nsp check"
   },
   "repository": {
     "type": "git",
@@ -22,8 +25,12 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^4.0.1",
+    "nsp": "^2.8.1",
+    "retire": "^1.4.0",
     "rewire": "^2.5.2",
-    "sinon": "^4.0.1"
+    "sinon": "^4.0.1",
+    "standard": "^10.0.3"
   }
 }
