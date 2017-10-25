@@ -7,7 +7,8 @@
     "test": "node_modules/mocha/bin/_mocha --ui bdd --recursive ./spec/tests/unit && node_modules/mocha/bin/_mocha --ui bdd --recursive ./spec/tests/functional",
     "coverage": "node_modules/istanbul/lib/cli.js cover --include-all-sources ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 --recursive ./spec/tests/unit",
     "lint": "node_modules/standard/bin/cmd.js --ignore spec/*",
-    "security": "node_modules/retire/bin/retire; node_modules/nsp/bin/nsp check"
+    "security": "node_modules/retire/bin/retire; node_modules/nsp/bin/nsp check",
+    "worker": "node app.js"
   },
   "repository": {
     "type": "git",
