@@ -10,10 +10,6 @@ const Worker = require('./lib/worker')
 const errorsReadMode = (process.argv[2] === '--getErrors')
 const requeueMode = (process.argv[2] === '--requeue')
 
-const DISCOVERY_TIMEOUT = 1000
-const PRODUCER_WORKING_TIMEOUT = 500
-const CONSUMER_WORKING_TIMEOUT = 100
-
 let redisClient
 let serviceDiscovery
 let messageBroker
@@ -42,38 +38,11 @@ async function run () {
       redisClient.quit()
     } else {
       await worker.register()
-      await loopServiceDiscovery()
-      await loopProcessingMessages()
+      await worker.loopServiceDiscovery()
+      await worker.loopProcessingMessages()
     }
   } catch (err) {
     console.error(err)
-  }
-}
-
-async function loopServiceDiscovery () {
-  await worker.updateStatus()
-
-  if (worker.type === Worker.TYPE_CONSUMER) {
-    await worker.tryToBecomeProducer()
-  }
-
-  setTimeout(loopServiceDiscovery, DISCOVERY_TIMEOUT)
-}
-
-async function loopProcessingMessages () {
-  switch (worker.type) {
-    case Worker.TYPE_PRODUCER:
-      if (await worker.tryToUpdateProducerTTL()) {
-        await worker.produce()
-      }
-
-      setTimeout(loopProcessingMessages, PRODUCER_WORKING_TIMEOUT)
-      break
-    case Worker.TYPE_CONSUMER:
-      await worker.consume()
-
-      setTimeout(loopProcessingMessages, CONSUMER_WORKING_TIMEOUT)
-      break
   }
 }
 
