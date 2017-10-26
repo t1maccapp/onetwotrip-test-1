@@ -179,7 +179,6 @@ describe('worker.js', () => {
       await worker._tryToUpdateProducerTTL()
 
       assert.isTrue(updateProducerTTL.calledOnce)
-      assert.isTrue(updateProducerTTL.calledWith(worker._name))
       assert.equal(worker.type, Worker.TYPE_CONSUMER)
     })
 
@@ -196,7 +195,6 @@ describe('worker.js', () => {
       await worker._tryToUpdateProducerTTL()
 
       assert.isTrue(updateProducerTTL.calledOnce)
-      assert.isTrue(updateProducerTTL.calledWith(worker._name))
       assert.equal(worker.type, Worker.TYPE_PRODUCER)
     })
   })
