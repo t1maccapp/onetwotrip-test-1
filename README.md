@@ -15,7 +15,7 @@ You can run multiple workers and single instance of redis using docker-compose:
  1. Install deps ```npm i```
  2. Install and run redis ```redis-server```
  3. Run worker ```npm run worker```. If you have redis host or port different to default (localhost: 6379), provide it via env vars: __REDIS_HOST__ and __REDIS_PORT__
- 4. Check errors ```npm run getErrors``` and requeue lost processing messages ```npm run requeue```
+ 4. Check errors ```npm run errors``` and requeue lost processing messages ```npm run requeue```
 
 ### Testing
  1. ```npm test``` to run both unit and functional tests
